@@ -1,0 +1,10 @@
+main section {
+    display: grid;
+    grid-template-columns:  repeat(3,400px);
+    padding-bottom:40px;
+}
+img{
+    width: 300px;
+    height: 300px;
+  
+}
