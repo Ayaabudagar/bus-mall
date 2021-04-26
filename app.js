@@ -1,16 +1,27 @@
 'use strict';
 
-let imgArray = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg',
-    'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg',
-    'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg',
-    'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif',
-    'water-can.jpg', 'wine-glass.jpg'];
-
-
-
-
-
-
+let imgArray = [
+    'bag.jpg',
+    'banana.jpg',
+    'bathroom.jpg',
+    'boots.jpg',
+    'breakfast.jpg',
+    'bubblegum.jpg',
+    'chair.jpg',
+    'cthulhu.jpg',
+    'dog-duck.jpg',
+    'dragon.jpg',
+    'pen.jpg',
+    'pet-sweep.jpg',
+    'scissors.jpg',
+    'shark.jpg',
+    'sweep.png',
+    'tauntaun.jpg',
+    'tauntaun.jpg',
+    'unicorn.jpg',
+    'usb.gif',
+    'water-can.jpg',
+  ];
 
 
 const photoSection = document.getElementById('photoSection');
@@ -23,11 +34,18 @@ let clickNumber = 0;
 let leftImg = 0;
 let middleImg = 0;
 let rightImg= 0;
+let attempt=25;
 
 
-function Product(name) {
+
+
+
+
+
+
+function Product(name , img ) {
     this.name = name;
-    this.img = './img/' + name;
+    this.img =  `./img/${name}`;
     this.shown = 0;
     this.clicks = 0;
     Product.all.push(this);
@@ -40,25 +58,40 @@ for (let i = 0; i < imgArray.length; i++) {
     new Product(imgArray[i]);
 }
 
+function eventHandler(event) {
+    if ((event.target.id == 'leftImage' || event.target.id == 'rightImage' || event.target.id == 'middleImage') && clickNumber < attempt) {
 
-function getRandomNum(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
+        if (event.target.id == 'leftImage') {
+            Product.all[leftImg].clicks++;
+        }
+
+        if (event.target.id == 'rightImage') {
+            Product.all[rightImg].clicks++;
+        }
+
+        if (event.target.id == 'middleImage') {
+            Product.all[middleImg].clicks++;
+        }
+        clickNumber++;
+        renderSelectProduct();
+
+    } else {
+        console.log(Product.all);
+        photoSection.addEventListener('click', eventHandler);
+        
+    }
 }
-
 function renderSelectProduct() {
     let leftImgIndex = getRandomNum(0, imgArray.length - 1);
-    let middleImgIndex = getRandomNum(0, imgArray.length - 1);
-    let rightImgIndex = getRandomNum(0, imgArray.length - 1);
-
-    while (leftImgIndex === middleImgIndex) {
-        middleImgIndex = getRandomNum(0, imgArray.length - 1);
+   let  rightImgIndex ;
+   let  middleImgIndex;
+    do {
+         rightImgIndex = getRandomNum(0, imgArray.length - 1);
+         middleImgIndex = getRandomNum(0, imgArray.length - 1);
     }
+ while ( leftImgIndex === rightImgIndex || leftImgIndex === middleImgIndex || rightImgIndex === middleImgIndex );
 
-    while ((rightImgIndex === leftImgIndex) || (rightImgIndex === middleImgIndex)) {
-        rightImgIndex = getRandomNum(0, imgArray.length - 1);
-    }
+   
     leftImg =leftImgIndex
     middleImg = middleImgIndex
     rightImg = rightImgIndex
@@ -73,49 +106,35 @@ function renderSelectProduct() {
     Product.all[rightImgIndex].shown++;
 
 }
+photoSection.addEventListener('click', eventHandler);
+renderSelectProduct();
 
-function eventHandler(event) {
-    if ((event.target.id == 'leftImage' || event.target.id == 'rightImage' || event.target.id == 'middleImage') && clickNumber < 25) {
 
-        if (event.target.id == 'leftImage') {
-            images.all[left].clicks++;
-        }
-
-        if (event.target.id == 'rightImage') {
-            images.all[right].clicks++;
-        }
-
-        if (event.target.id == 'middleImage') {
-            images.all[middle].clicks++;
-        }
-        clickNumber++;
-        renderSelectProduct();
-
-    } else {
-        console.log(Product.all);
-        photoSection.removeEventListener('click', eventHandler);
-        button.addEventListener('click', eventButton);
-    }
+function getRandomNum(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
-function eventButton( event ) {
+
+
+function eventButton( e) {
     let ulistEl = document.createElement('ul');
     p.appendChild(ulistEl);
 
     for (let i = 0; i < Product.all.length; i++) {
         let listEl = document.createElement('li');
         ulistEl.appendChild(listEl);
-        listEl.textContent = Product.all[i].name + " had " + Product.all[i].clicks + ' votes, and was seen ' + Product.all[i].shown + ' times.'
+        listEl.textContent =`${Product.all[i].name} had a ${Product.all[i].clicks} votes , and was seen a ${Product.all[i].shown}.`;
 
     }
 
-
+    button.removeEventListener('click', eventHandler);
 
 }
-eventButton();
 
-photoSection.addEventListener('click', eventHandler);
-renderSelectProduct();
 
+button.addEventListener('click', eventButton);
+// renderSelectProduct();
 
 
 
