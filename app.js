@@ -130,7 +130,16 @@ function eventButton( e) {
 
     button.removeEventListener('click', eventHandler);
     renderChart();
+    saveProduct();
+
+  }  
+function saveProduct() {
+  let allProductSaved = JSON.stringify(Product.all);
+  localStorage.setItem('allProductSaved', allProductSaved);
+
 }
+
+
 function renderChart() {
 
     let clicks = [];
