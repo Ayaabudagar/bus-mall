@@ -110,6 +110,15 @@ photoSection.addEventListener('click', eventHandler);
 renderSelectProduct();
 
 
+
+
+
+
+
+
+
+
+
 function getRandomNum(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -130,7 +139,16 @@ function eventButton( e) {
 
     button.removeEventListener('click', eventHandler);
     renderChart();
+    saveProduct();
+
+  }  
+function saveProduct() {
+  let allProductSaved = JSON.stringify(Product.all);
+  localStorage.setItem('allProductSaved', allProductSaved);
+
 }
+
+
 function renderChart() {
 
     let clicks = [];
@@ -177,6 +195,16 @@ function renderChart() {
    
   
   }
+  
+function getData() {
+  let data = JSON.parse( localStorage.getItem( 'allProductSaved' ) );
+  if( data ) {
+    for( let i = 0; i < data.length; i++ ) {
+      new Product( data[i].name, data[i].img, data[i].shown, data[i].clicks );
+    }
+    renderSelectProduct();
+  }
+}
 
 
 
