@@ -43,11 +43,11 @@ let attempt=25;
 
 
 
-function Product(name , img ) {
+function Product(name , img , shown = 0 , clicks = 0 ) {
     this.name = name;
     this.img =  `./img/${name}`;
-    this.shown = 0;
-    this.clicks = 0;
+    this.shown = shown;
+    this.clicks = clicks;
     Product.all.push(this);
     
 }
@@ -73,6 +73,7 @@ function eventHandler(event) {
             Product.all[middleImg].clicks++;
         }
         clickNumber++;
+        saveProduct();
         renderSelectProduct();
 
     } else {
@@ -139,7 +140,7 @@ function eventButton( e) {
 
     button.removeEventListener('click', eventHandler);
     renderChart();
-    saveProduct();
+    
 
   }  
 function saveProduct() {
